@@ -110,16 +110,16 @@ public:
         if (tuple == nullptr)
         {
             bool *visited[2] = {nullptr, nullptr};
-            visited[0] = new bool[CAPACITY], std::memset(visited[0], 0, sizeof(bool) * CAPACITY);
-            visited[1] = new bool[CAPACITY], std::memset(visited[1], 0, sizeof(bool) * CAPACITY);
+            visited[0] = new bool[CAPACITY], memset(visited[0], 0, sizeof(bool) * CAPACITY);
+            visited[1] = new bool[CAPACITY], memset(visited[1], 0, sizeof(bool) * CAPACITY);
             tuple = new Tuple<KType, VType>(k, v);
             if (!innerSet(tuple, true, visited))
             {
                 // std::puts("inner set failed");
                 increaseCapacity();
                 bool *visited[2] = {nullptr, nullptr};
-                visited[0] = new bool[CAPACITY], std::memset(visited[0], 0, sizeof(bool) * CAPACITY);
-                visited[1] = new bool[CAPACITY], std::memset(visited[1], 0, sizeof(bool) * CAPACITY);
+                visited[0] = new bool[CAPACITY], memset(visited[0], 0, sizeof(bool) * CAPACITY);
+                visited[1] = new bool[CAPACITY], memset(visited[1], 0, sizeof(bool) * CAPACITY);
                 innerSet(tuple, true, visited);
                 delete[] visited[0], visited[0] = nullptr;
                 delete[] visited[1], visited[0] = nullptr;
@@ -158,6 +158,21 @@ public:
             delete rightTable[idx2];
             rightTable[idx2] = nullptr;
         }
+    }
+
+    Tuple<KType, VType> **getLeftTable()
+    {
+        return leftTable;
+    }
+
+    Tuple<KType, VType> **getRightTable()
+    {
+        return rightTable;
+    }
+
+    const int getCapacity()
+    {
+        return CAPACITY;
     }
 };
 

@@ -6,8 +6,14 @@
 #include <QLineEdit>
 #include <QLabel>
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QPushButton>
+#include <QTableWidget>
+#include <QHeaderView>
+#include <QStringList>
+#include <stddef.h>
 
+#include "CuckooHashing.hpp"
 
 class CuckooWidget : public QWidget
 {
@@ -17,6 +23,11 @@ public:
 private:
     QLineEdit *keyEdit, *valEdit;
     QPushButton *insertButton, *deleteButton;
+    QTableWidget *tableWidget;
+    CuckooHashing<uint32_t, uint32_t> cuckooHashing;
+
+    void resetTableWidget();
+
 
 signals:
 
