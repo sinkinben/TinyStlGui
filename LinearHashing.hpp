@@ -115,7 +115,7 @@ public:
         }
     }
 
-    uint32_t getCapacity() { return CAPACITY; }
+    int getCapacity() { return CAPACITY; }
 
     Tuple<KType, VType> **getTable() { return table; }
 };
