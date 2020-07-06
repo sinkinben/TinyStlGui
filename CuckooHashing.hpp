@@ -170,7 +170,7 @@ public:
         return rightTable;
     }
 
-    const int getCapacity()
+    int getCapacity()
     {
         return CAPACITY;
     }

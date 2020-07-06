@@ -49,17 +49,22 @@ void MainWindow::initWindow()
     this->initLeftNavigationDock();
     this->initVectorWidget();
     this->initStackWidget();
+    this->initLinearWidget();
     this->initCuckooWidget();
 
     this->mainHLayout = new QHBoxLayout();
     this->mainHLayout->addWidget(this->leftTreeWidget);
     this->mainHLayout->addWidget(this->vectorWidget);
     this->mainHLayout->addWidget(this->stackWidget);
+    this->mainHLayout->addWidget(this->linearWidget);
     this->mainHLayout->addWidget(this->cuckooWidget);
+
 
     this->widgetSwitcher[this->stlTypes[VectorIndex]] = this->vectorWidget;
     this->widgetSwitcher[this->stlTypes[StackIndex]] = this->stackWidget;
+    this->widgetSwitcher[this->stlTypes[LinearHashingIndex]] = this->linearWidget;
     this->widgetSwitcher[this->stlTypes[CuckooHasingIndex]] = this->cuckooWidget;
+
 
     QWidget *mainWidget = new QWidget();
     mainWidget->setLayout(mainHLayout);
@@ -82,6 +87,12 @@ void MainWindow::initCuckooWidget()
 {
     this->cuckooWidget = new CuckooWidget();
     this->cuckooWidget->setVisible(false);
+}
+
+void MainWindow::initLinearWidget()
+{
+    this->linearWidget = new LinearWidget();
+    this->linearWidget->setVisible(false);
 }
 
 void MainWindow::initLeftNavigationDock()

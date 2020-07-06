@@ -1,42 +1,41 @@
-#ifndef CUCKOOWIDGET_H
-#define CUCKOOWIDGET_H
+#ifndef LINEARWIDGET_H
+#define LINEARWIDGET_H
 
 #include <QDebug>
 #include <QWidget>
 #include <QLineEdit>
 #include <QLabel>
 #include <QHBoxLayout>
-#include <QVBoxLayout>
 #include <QPushButton>
 #include <QTableWidget>
-#include <QHeaderView>
 #include <QStringList>
-#include <stddef.h>
+#include <QHeaderView>
 
-#include "CuckooHashing.hpp"
+#include "LinearHashing.hpp"
 
-class CuckooWidget : public QWidget
+class LinearWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit CuckooWidget(QWidget *parent = nullptr);
-    ~CuckooWidget();
+    explicit LinearWidget(QWidget *parent = nullptr);
+    ~LinearWidget();
+
 private:
-    const int initRow = 8, initCol = 3;
+    const int initRow = 8, initCol = 2;
     QLineEdit *keyEdit, *valEdit;
     QPushButton *insertButton, *deleteButton;
     QTableWidget *tableWidget;
-    CuckooHashing<uint32_t, uint32_t> cuckooHashing;
+    LinearHashing<uint32_t, uint32_t> linearHashing;
 
     void clearTableWidget();
     void resetTableWidget();
-
 
 signals:
 
 private slots:
     void insertButtonSlot();
     void deleteButtonSlot();
+
 };
 
-#endif // CUCKOOWIDGET_H
+#endif // LINEARWIDGET_H

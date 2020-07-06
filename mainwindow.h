@@ -16,6 +16,7 @@
 #include "vectorwidget.h"
 #include "stackwidget.h"
 #include "cuckoowidget.h"
+#include "linearwidget.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -40,6 +41,7 @@ private:
     void initVectorWidget();
     void initStackWidget();
     void initCuckooWidget();
+    void initLinearWidget();
 
 
     void activateWidget(QWidget *);
@@ -64,6 +66,7 @@ private:
     VectorWidget *vectorWidget;
     StackWidget *stackWidget;
     CuckooWidget *cuckooWidget;
+    LinearWidget *linearWidget;
 
 
 };

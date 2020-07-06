@@ -8,7 +8,7 @@ class LinearHashing : public Hashing<KType, VType>
 {
 private:
     int CAPACITY = 8;
-    uint32_t size;
+    int size;
     Tuple<KType, VType> **table;
     HashFn hashFunc;
 
@@ -114,5 +114,9 @@ public:
             delete[] temp;
         }
     }
+
+    uint32_t getCapacity() { return CAPACITY; }
+
+    Tuple<KType, VType> **getTable() { return table; }
 };
 #endif

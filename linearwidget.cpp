@@ -1,6 +1,6 @@
-#include "cuckoowidget.h"
+#include "linearwidget.h"
 
-CuckooWidget::CuckooWidget(QWidget *parent) : QWidget(parent)
+LinearWidget::LinearWidget(QWidget *parent) : QWidget(parent)
 {
     QLabel *keyLabel = new QLabel("Key", this);
     QLabel *valLabel = new QLabel("Value", this);
@@ -11,21 +11,20 @@ CuckooWidget::CuckooWidget(QWidget *parent) : QWidget(parent)
     deleteButton = new QPushButton("Delete");
     tableWidget = new QTableWidget(initRow, initCol, this);
 
-    QStringList headerList;
-    headerList << "Index" << "H1(x) = x % S" << "H2(x) = (x/S) % S";
+    connect(insertButton, SIGNAL(clicked(bool)), this, SLOT(insertButtonSlot()));
+    connect(deleteButton, SIGNAL(clicked(bool)), this, SLOT(deleteButtonSlot()));
 
-    tableWidget->setHorizontalHeaderLabels(headerList);
+    QStringList header;
+    header << "Index" << "H(x) = x % S";
+
+    tableWidget->setHorizontalHeaderLabels(header);
     tableWidget->verticalHeader()->setVisible(false);
     tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     tableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-    // init the table
     clearTableWidget();
 
-
-    connect(insertButton, SIGNAL(clicked()), this, SLOT(insertButtonSlot()));
-    connect(deleteButton, SIGNAL(clicked()), this, SLOT(deleteButtonSlot()));
-
+    QVBoxLayout *vlayout = new QVBoxLayout();
     QHBoxLayout *hlayout = new QHBoxLayout();
     hlayout->addWidget(keyLabel);
     hlayout->addWidget(keyEdit);
@@ -34,15 +33,14 @@ CuckooWidget::CuckooWidget(QWidget *parent) : QWidget(parent)
     hlayout->addWidget(insertButton);
     hlayout->addWidget(deleteButton);
 
-    QVBoxLayout *vlayout = new QVBoxLayout();
+
     vlayout->addLayout(hlayout);
     vlayout->addWidget(tableWidget);
-
 
     this->setLayout(vlayout);
 }
 
-CuckooWidget::~CuckooWidget()
+LinearWidget::~LinearWidget()
 {
     if (keyEdit != nullptr)
         delete keyEdit;
@@ -56,8 +54,23 @@ CuckooWidget::~CuckooWidget()
         delete tableWidget;
 }
 
+void LinearWidget::insertButtonSlot()
+{
+    const uint32_t key = keyEdit->text().toUInt();
+    const uint32_t val = valEdit->text().toUInt();
+    linearHashing.set(key, val);
+    resetTableWidget();
+}
+
+void LinearWidget::deleteButtonSlot()
+{
+    const uint32_t key = keyEdit->text().toUInt();
+    linearHashing.remove(key);
+    resetTableWidget();
+}
+
 // set the table cells' content as ""
-void CuckooWidget::clearTableWidget()
+void LinearWidget::clearTableWidget()
 {
     int r = tableWidget->rowCount();
     int c = tableWidget->columnCount();
@@ -90,46 +103,25 @@ void CuckooWidget::clearTableWidget()
     }
 }
 
-void CuckooWidget::resetTableWidget()
+void LinearWidget::resetTableWidget()
 {
-    auto h1 = cuckooHashing.getLeftTable();
-    auto h2 = cuckooHashing.getRightTable();
-    int len = cuckooHashing.getCapacity();
-
+    int len = linearHashing.getCapacity();
+    auto const table = linearHashing.getTable();
     if (len != tableWidget->rowCount())
     {
         tableWidget->setRowCount(len);
         clearTableWidget();
     }
-    for (int i = 0; i < len; i++)
+
+    for (int i=0; i<len; i++)
     {
-        if (h1[i] != nullptr)
-            tableWidget->item(i, 1)->setText(QString("(%1, %2)").arg(h1[i]->getKey()).arg(h1[i]->getVal()));
+        if (table[i] != nullptr)
+        {
+            tableWidget->item(i, 1)->setText(QString("(%1, %2)").arg(table[i]->getKey()).arg(table[i]->getVal()));
+        }
         else
+        {
             tableWidget->item(i, 1)->setText("");
-
-
-        if (h2[i] != nullptr)
-            tableWidget->item(i, 2)->setText(QString("(%1, %2)").arg(h2[i]->getKey()).arg(h2[i]->getVal()));
-        else
-            tableWidget->item(i, 2)->setText("");
-
+        }
     }
-
-}
-
-void CuckooWidget::insertButtonSlot()
-{
-    const uint32_t key = this->keyEdit->text().toUInt();
-    const uint32_t val = this->valEdit->text().toUInt();
-    cuckooHashing.set(key, val);
-    resetTableWidget();
-
-}
-
-void CuckooWidget::deleteButtonSlot()
-{
-    const uint32_t key = this->keyEdit->text().toUInt();
-    cuckooHashing.remove(key);
-    resetTableWidget();
 }

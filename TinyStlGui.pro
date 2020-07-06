@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     cuckoowidget.cpp \
+    linearwidget.cpp \
     main.cpp \
     mainwindow.cpp \
     stackwidget.cpp \
@@ -28,6 +29,7 @@ HEADERS += \
     Hashing.h \
     LinearHashing.hpp \
     cuckoowidget.h \
+    linearwidget.h \
     mainwindow.h \
     stackwidget.h \
     vectorwidget.h
