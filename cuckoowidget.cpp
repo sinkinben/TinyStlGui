@@ -1,7 +1,9 @@
 #include "cuckoowidget.h"
-#define S 8
+
 CuckooWidget::CuckooWidget(QWidget *parent) : QWidget(parent)
 {
+    QPushButton *button = new QPushButton("Test");
+
     QLabel *keyLabel = new QLabel("Key");
     QLabel *valLabel = new QLabel("Value");
 
@@ -9,7 +11,7 @@ CuckooWidget::CuckooWidget(QWidget *parent) : QWidget(parent)
     valEdit = new QLineEdit(this);
     insertButton = new QPushButton("Insert");
     deleteButton = new QPushButton("Delete");
-    tableWidget = new QTableWidget(S,3, this);
+    tableWidget = new QTableWidget(initRow, initCol, this);
 
     QStringList headerList;
     headerList << "Index" << "H1(x) = x % S" << "H2(x) = (x/S) % S";
@@ -19,25 +21,13 @@ CuckooWidget::CuckooWidget(QWidget *parent) : QWidget(parent)
     tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     tableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-    for (int i=0; i<S; i++)
-    {
-        QTableWidgetItem *item0 = new QTableWidgetItem(QString::number(i));
-        item0->setTextAlignment(Qt::AlignCenter);
-        tableWidget->setItem(i, 0, item0);
-
-        QTableWidgetItem *item1 = new QTableWidgetItem("");
-        item1->setTextAlignment(Qt::AlignCenter);
-        tableWidget->setItem(i, 1, item1);
-
-        QTableWidgetItem *item2 = new QTableWidgetItem("");
-        item2->setTextAlignment(Qt::AlignCenter);
-        tableWidget->setItem(i, 2, item2);
-
-    }
+    // init the table
+    clearTableWidget();
 
 
     connect(insertButton, SIGNAL(clicked()), this, SLOT(insertButtonSlot()));
     connect(deleteButton, SIGNAL(clicked()), this, SLOT(deleteButtonSlot()));
+    connect(button, SIGNAL(clicked()), this, SLOT(testSlot()));
 
     QHBoxLayout *hlayout = new QHBoxLayout();
     hlayout->addWidget(keyLabel);
@@ -46,6 +36,7 @@ CuckooWidget::CuckooWidget(QWidget *parent) : QWidget(parent)
     hlayout->addWidget(valEdit);
     hlayout->addWidget(insertButton);
     hlayout->addWidget(deleteButton);
+    hlayout->addWidget(button);
 
     QVBoxLayout *vlayout = new QVBoxLayout();
     vlayout->addLayout(hlayout);
@@ -55,11 +46,51 @@ CuckooWidget::CuckooWidget(QWidget *parent) : QWidget(parent)
     this->setLayout(vlayout);
 }
 
+// set the table cells' content as ""
+void CuckooWidget::clearTableWidget()
+{
+    int r = tableWidget->rowCount();
+    int c = tableWidget->columnCount();
+    for (int i=0; i<r; i++)
+    {
+        auto item = tableWidget->item(i, 0);
+        if (item == nullptr)
+        {
+            item = new QTableWidgetItem(QString::number(i));
+            item->setTextAlignment(Qt::AlignCenter);
+            tableWidget->setItem(i, 0, item);
+        }
+    }
+    for (int i=0; i<r; i++)
+    {
+        for (int j=1; j<c; j++)
+        {
+            auto item = tableWidget->item(i, j);
+            if (item == nullptr)
+            {
+                item = new QTableWidgetItem("");
+                item->setTextAlignment(Qt::AlignCenter);
+                tableWidget->setItem(i, j, item);
+            }
+            else
+            {
+                item->setText("");
+            }
+        }
+    }
+}
+
 void CuckooWidget::resetTableWidget()
 {
     auto h1 = cuckooHashing.getLeftTable();
     auto h2 = cuckooHashing.getRightTable();
     int len = cuckooHashing.getCapacity();
+
+    if (len != tableWidget->rowCount())
+    {
+        tableWidget->setRowCount(len);
+        clearTableWidget();
+    }
     for (int i = 0; i < len; i++)
     {
         if (h1[i] != nullptr)
@@ -88,8 +119,11 @@ void CuckooWidget::insertButtonSlot()
 
 void CuckooWidget::deleteButtonSlot()
 {
-    qDebug() << "delete button is clicked";
     const uint32_t key = this->keyEdit->text().toUInt();
     cuckooHashing.remove(key);
     resetTableWidget();
+}
+
+void CuckooWidget::testSlot()
+{
 }
