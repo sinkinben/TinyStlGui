@@ -13,8 +13,6 @@
 #include <QString>
 #include <QMap>
 
-#include "vectorwidget.h"
-#include "stackwidget.h"
 #include "cuckoowidget.h"
 #include "linearwidget.h"
 
@@ -38,8 +36,6 @@ private:
     void initLeftNavigationDock();
     void initSignalSlots();
 
-    void initVectorWidget();
-    void initStackWidget();
     void initCuckooWidget();
     void initLinearWidget();
 
@@ -52,8 +48,8 @@ private slots:
 
 private:
     enum treeItemType {TreeTopItem = 10001, TreeGruopItem, TreeNodeItem};
-    enum stlIypeIndex {VectorIndex = 0, StackIndex, LinearHashingIndex,CuckooHasingIndex, StlTypesNumber};
-    const char* stlTypes[StlTypesNumber] = {"Vector", "Stack", "LinearHasing", "CuckooHashing"};
+    enum stlIypeIndex {LinearHashingIndex = 0, CuckooHasingIndex, StlTypesNumber};
+    const char* stlTypes[StlTypesNumber] = {"LinearHasing", "CuckooHashing"};
 
     QHBoxLayout *mainHLayout;       // the main window split into left and right two parts
     QMenuBar *menuBar;              // the top menu bar
@@ -63,8 +59,6 @@ private:
 
     QMap<QString, QWidget*> widgetSwitcher;
     QWidget *selectedWidget = nullptr;  // always points to the selected widget
-    VectorWidget *vectorWidget;
-    StackWidget *stackWidget;
     CuckooWidget *cuckooWidget;
     LinearWidget *linearWidget;
 

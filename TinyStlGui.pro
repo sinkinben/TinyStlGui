@@ -19,9 +19,7 @@ SOURCES += \
     cuckoowidget.cpp \
     linearwidget.cpp \
     main.cpp \
-    mainwindow.cpp \
-    stackwidget.cpp \
-    vectorwidget.cpp
+    mainwindow.cpp
 
 HEADERS += \
     CuckooHashing.hpp \
@@ -30,9 +28,7 @@ HEADERS += \
     LinearHashing.hpp \
     cuckoowidget.h \
     linearwidget.h \
-    mainwindow.h \
-    stackwidget.h \
-    vectorwidget.h
+    mainwindow.h
 
 FORMS += \
     mainwindow.ui
