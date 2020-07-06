@@ -14,10 +14,13 @@ CuckooWidget::CuckooWidget(QWidget *parent) : QWidget(parent)
     QStringList headerList;
     headerList << "Index" << "H1(x) = x % S" << "H2(x) = (x/S) % S";
 
+
+    // set tableWidget style
     tableWidget->setHorizontalHeaderLabels(headerList);
     tableWidget->verticalHeader()->setVisible(false);
     tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     tableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
 
     // init the table
     clearTableWidget();

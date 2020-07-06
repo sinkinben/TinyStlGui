@@ -17,6 +17,7 @@ LinearWidget::LinearWidget(QWidget *parent) : QWidget(parent)
     QStringList header;
     header << "Index" << "H(x) = x % S";
 
+    // set tableWidget style
     tableWidget->setHorizontalHeaderLabels(header);
     tableWidget->verticalHeader()->setVisible(false);
     tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
